@@ -106,6 +106,37 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+// Change Password API
+app.post('/api/change-password', async (req, res) => {
+    try {
+      const { username, currentPassword, newPassword } = req.body;
+  
+      // Check if username exists
+      const user = await User.findOne({ username });
+      if (!user) {
+        return res.status(400).json({ message: 'User not found' });
+      }
+  
+      // Compare current password
+      const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+      if (!isPasswordValid) {
+        return res.status(400).json({ message: 'Invalid current password' });
+      }
+  
+      // Hash the new password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+  
+      // Update the password
+      user.password = hashedPassword;
+      await user.save();
+  
+      res.status(200).json({ message: 'Password changed successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'An error occurred' });
+    }
+  });
+
 // Start the server
 const port = 7000;
 app.listen(port, () => console.log(`Server started on port ${port}`));

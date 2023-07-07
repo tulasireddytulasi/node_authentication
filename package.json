@@ -4,13 +4,15 @@
   "description": "Node login APIs",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "local": "nodemon server.js"
   },
   "author": "Tulasi",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "express": "^4.18.2",
-    "mongoose": "^7.3.2"
+    "mongoose": "^7.3.2",
+    "nodemon": "^2.0.22"
   }
 }
